@@ -102,7 +102,7 @@ SELECT * FROM students ORDER BY age LIMIT 3;
 SELECT * FROM students ORDER BY age LIMIT 3 OFFSET 3;
 SELECT * FROM students LIMIT 3 OFFSET 9;
 
-# UPDATES
+# UPDATE & DELETE
 
 UPDATE students SET NAME = 'BUHARIK', gender = 'MURLO' WHERE age = 20;
 UPDATE students SET NAME = 'MOROZ' WHERE age = 25;
@@ -111,3 +111,49 @@ UPDATE students SET age = 20 WHERE age >= 40;
 DELETE FROM students WHERE gender = 'BREHLO';
 DELETE FROM students WHERE name = 'MOROZ';
 
+
+# FROM SECOND LESSON:
+
+SELECT * FROM students JOIN ratings r on students.id = r.student_id;
+SELECT
+    students.name,
+    ratings.rating
+FROM students JOIN ratings ON students.id = ratings.student_id;
+
+SELECT s.name, r.rating, l.label
+FROM ratings AS r
+    JOIN lesson AS l ON l.id = r.lesson_id
+    JOIN students AS s ON s.id = r.student_id; # it may without AS only by one small letter
+
+SELECT s.name, r.rating, l.label
+FROM ratings AS r
+    JOIN lesson AS l ON l.id = r.lesson_id
+    JOIN students AS s ON s.id = r.student_id
+WHERE r.rating = 5;
+
+SELECT COUNT(gender), name, gender FROM students GROUP BY gender, name;
+
+SELECT AVG(rating), S.name FROM ratings R RIGHT JOIN students S ON R.student_id = S.id GROUP BY S.name;
+
+SELECT CONCAT(name, '_', age) FROM students;
+
+SELECT CONCAT(S.name, '_', L.label )
+FROM students S
+JOIN lesson L on L.id = S.id;
+
+SELECT * FROM students S
+JOIN ratings r on S.id = r.student_id
+WHERE r.rating = 5;
+
+SELECT * FROM students WHERE id IN(SELECT student_id FROM ratings WHERE rating = 5);
+SELECT * FROM students WHERE id IN(5, 6, 5, 3);
+
+SELECT name FROM students;
+SELECT DISTINCT name, COUNT(name) FROM students GROUP BY name;
+
+SELECT AVG(rating), S.name
+FROM ratings R
+     RIGHT JOIN students S ON R.student_id = S.id
+GROUP BY S.name;
+
+SELECT * FROM students WHERE age NOT IN (10, 20, 50);
